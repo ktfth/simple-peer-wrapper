@@ -7,6 +7,7 @@ class SimplePeerClientWrapper {
     this.localStream;
     this.debug = debug;
     this.connections = [];
+    this.onConnectCallback;
     this.onDataCallback;
     this.onStreamCallback;
     // this.onTrackCallback;
@@ -84,6 +85,9 @@ class SimplePeerClientWrapper {
 
   setEventCallback(event, callback) {
     switch (event) {
+      case 'connect':
+        this.onConnectCallback = callback;
+        break;
       case 'data':
         this.onDataCallback = callback;
         break;
@@ -161,6 +165,7 @@ class SimplePeerClientWrapper {
 
   _handleConnection(data) {
     console.log('SIMPLE PEER IS CONNECTED');
+    this.onConnectCallback(data);
   }
 
   _handleStream(stream) {
@@ -173,6 +178,10 @@ class SimplePeerClientWrapper {
     } else {
       console.log(err);
     }
+  }
+
+  _handleConnect() {
+
   }
 
   _handleData(data) {
